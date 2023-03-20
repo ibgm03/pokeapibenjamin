@@ -21,7 +21,7 @@ export const SearchBar = () => {
         <div className="col-span-9">
           <input
             type="text"
-            placeholder="Buscar pokemon ..."
+            placeholder="Buscar Pokemon ..."
             className="bg-[#F0F1F5] font-semibold py-2 px-4 rounded-full w-[20rem]"
             onChange={onChange}
           />
@@ -34,15 +34,6 @@ export const SearchBar = () => {
             Buscar
           </button>
         </div>
-      </div>
-      <div>
-        {pokemon && (
-          <div>
-            <div>Nombre:{pokemon.name}</div>
-            <div>Peso:{pokemon.weight}</div>
-            <img src={pokemon.sprites.front_default} alt="" />
-          </div>
-        )}
       </div>
     </div>
   );
