@@ -15,10 +15,27 @@ export const Pokedex = (props) => {
       <div className="grid grid-cols-2 mx-auto text-center mt-5">
         {pokemons.map((pokemon, idx) => {
           return (
-            <div key={pokemon.name}>
-              #{idx + 1}: {pokemon.name}: {pokemon.height}
-              <div>
-                <img src={pokemon.sprites.front_default} alt="" />
+            <div className="shadow-lg p-5">
+              <div key={pokemon.name}>
+                <div className="">
+                  <img
+                    src={pokemon.sprites.front_default}
+                    alt=""
+                    className="mx-auto w-24"
+                  />
+                </div>
+                <div className="font-medium text-center">
+                  <div>
+                    {" "}
+                    #{idx + 1}: {pokemon.name}
+                  </div>
+                  <div className="grid grid-cols-2 mt-3">
+                    {pokemon.types.map((type, idx) => {
+                      return <div key={idx}>{type.type.name}</div>;
+                    })}
+                  </div>
+                  <div></div>
+                </div>
               </div>
             </div>
           );
