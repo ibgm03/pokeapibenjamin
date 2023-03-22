@@ -4,9 +4,12 @@ import { SearchBar } from "./components/SearchBar";
 import { Pokedex } from "./components/Pokedex";
 import { useState, useEffect } from "react";
 import { getPokemonData, getPokemons } from "./api";
-import Card from "./components/Card";
 
 export const App = () => {
+  const [pokemons, setPokemons] = useState([]);
+  const [page, setPage] = useState();
+  const [total, setTotal] = useState();
+  const [loading, setLoading] = useState(true);
   const fetchPokemons = async () => {
     try {
       const data = await getPokemons();
@@ -16,10 +19,10 @@ export const App = () => {
       });
       const results = await Promise.all(promises);
       setPokemons(results);
+      setLoading(false);
     } catch (error) {}
   };
 
-  const [pokemons, setPokemons] = useState([]);
   // Use effect se utiliza para renderizar la primera vez que renderice
 
   useEffect(() => {
@@ -30,8 +33,11 @@ export const App = () => {
       <Navbar />
       <div className="App">
         <SearchBar />
-        <Pokedex pokemons={pokemons} />
-        {/* <Card pokemon={pokemons} /> */}
+        {loading ? (
+          <div> cargando pokemones ... </div>
+        ) : (
+          <Pokedex pokemons={pokemons} />
+        )}
       </div>
     </div>
   );

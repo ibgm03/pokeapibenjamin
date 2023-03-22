@@ -1,4 +1,5 @@
 import React from "react";
+import { Pagination } from "./Pagination";
 
 export const Pokedex = (props) => {
   const { pokemons } = props;
@@ -9,7 +10,14 @@ export const Pokedex = (props) => {
           <div className="font-semibold text-3xl">Pokédex</div>
         </div>
         <div className="col-span-4">
-          <div>Paginación</div>
+          <div>
+            <Pagination
+              page={1}
+              totalPages={111}
+              onLeftClick={console.log}
+              onRightClick={console.log}
+            />
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-2 mx-auto text-center mt-5">
@@ -25,7 +33,7 @@ export const Pokedex = (props) => {
                   />
                 </div>
                 <div className="font-medium text-center">
-                  <div>
+                  <div className="font-bold text-xl">
                     {" "}
                     #{idx + 1}: {pokemon.name}
                   </div>
