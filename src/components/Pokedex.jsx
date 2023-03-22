@@ -2,7 +2,18 @@ import React from "react";
 import { Pagination } from "./Pagination";
 
 export const Pokedex = (props) => {
-  const { pokemons } = props;
+  const { pokemons, page, setPage, total } = props;
+
+  const lastPage = () => {
+    const nextPage = Math.max(page - 1, 0);
+    setPage(nextPage);
+  };
+
+  const nextPage = () => {
+    const nextPage = Math.min(page + 1, total);
+    setPage(nextPage);
+  };
+
   return (
     <div className="container mx-auto mt-5">
       <div className="grid grid-cols-12">
@@ -12,10 +23,10 @@ export const Pokedex = (props) => {
         <div className="col-span-4">
           <div>
             <Pagination
-              page={1}
-              totalPages={111}
-              onLeftClick={console.log}
-              onRightClick={console.log}
+              page={page + 1}
+              totalPages={total}
+              onLeftClick={lastPage}
+              onRightClick={nextPage}
             />
           </div>
         </div>
@@ -33,10 +44,7 @@ export const Pokedex = (props) => {
                   />
                 </div>
                 <div className="font-medium text-center">
-                  <div className="font-bold text-xl">
-                    {" "}
-                    #{idx + 1}: {pokemon.name}
-                  </div>
+                  <div className="font-bold text-xl"> {pokemon.name}</div>
                   <div className="grid grid-cols-2 mt-3">
                     {pokemon.types.map((type, idx) => {
                       return <div key={idx}>{type.type.name}</div>;

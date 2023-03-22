@@ -7,12 +7,13 @@ import { getPokemonData, getPokemons } from "./api";
 
 export const App = () => {
   const [pokemons, setPokemons] = useState([]);
-  const [page, setPage] = useState();
-  const [total, setTotal] = useState();
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const fetchPokemons = async () => {
     try {
-      const data = await getPokemons();
+      setLoading(true);
+      const data = await getPokemons(25, 25 * page);
       //   console.log(data);
       const promises = data.results.map(async (pokemon) => {
         return await getPokemonData(pokemon.url);
@@ -20,6 +21,7 @@ export const App = () => {
       const results = await Promise.all(promises);
       setPokemons(results);
       setLoading(false);
+      setTotal(Math.ceil(data.count / 25));
     } catch (error) {}
   };
 
@@ -27,7 +29,7 @@ export const App = () => {
 
   useEffect(() => {
     fetchPokemons();
-  }, []);
+  }, [page]);
   return (
     <div>
       <Navbar />
@@ -36,7 +38,12 @@ export const App = () => {
         {loading ? (
           <div> cargando pokemones ... </div>
         ) : (
-          <Pokedex pokemons={pokemons} />
+          <Pokedex
+            pokemons={pokemons}
+            page={page}
+            setPage={setPage}
+            total={total}
+          />
         )}
       </div>
     </div>
