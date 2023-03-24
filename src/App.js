@@ -3,13 +3,16 @@ import { Navbar } from "./components/Navbar";
 import { SearchBar } from "./components/SearchBar";
 import { Pokedex } from "./components/Pokedex";
 import { useState, useEffect } from "react";
-import { getPokemonData, getPokemons } from "./api";
+import { getPokemonData, getPokemons, searchPokemon } from "./api";
 
 export const App = () => {
   const [pokemons, setPokemons] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+  const [searching, setSearching] = useState(false);
+
   const fetchPokemons = async () => {
     try {
       setLoading(true);
@@ -25,6 +28,26 @@ export const App = () => {
     } catch (error) {}
   };
 
+  const onSearch = async (pokemon) => {
+    if (!pokemon) {
+      return fetchPokemons();
+    }
+    setLoading(true);
+    setNotFound(false);
+    setSearching(true);
+    const result = await searchPokemon(pokemon);
+    if (!result) {
+      setNotFound(true);
+      setLoading(false);
+      return;
+    } else {
+      setPokemons([result]);
+      setPage(0);
+      setTotal(1);
+    }
+    setLoading(false);
+    setSearching(false);
+  };
   // Use effect se utiliza para renderizar la primera vez que renderice
 
   useEffect(() => {
@@ -34,11 +57,14 @@ export const App = () => {
     <div>
       <Navbar />
       <div className="App">
-        <SearchBar />
-        {loading ? (
-          <div> cargando pokemones ... </div>
+        <SearchBar onSearch={onSearch} />
+        {notFound ? (
+          <div className="not-found-text">
+            No se encontro el Pokemon que buscabas 😭
+          </div>
         ) : (
           <Pokedex
+            loading={loading}
             pokemons={pokemons}
             page={page}
             setPage={setPage}

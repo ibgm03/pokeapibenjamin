@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import { searchPokemon } from "../api";
 
-export const SearchBar = () => {
+export const SearchBar = (props) => {
+  const { onSearch } = props;
   const [search, setSearch] = useState("");
-  const [pokemon, setPokemon] = useState();
+  //   const [pokemon, setPokemon] = useState();
 
   const onChange = (e) => {
     console.log(e.target.value);
     setSearch(e.target.value);
   };
 
+  //   const onClick = async (e) => {
+  //     const data = await searchPokemon(search);
+  //     console.log(data);
+  //     setPokemon(data);
+  //   };
+
   const onClick = async (e) => {
-    const data = await searchPokemon(search);
-    console.log(data);
-    setPokemon(data);
+    onSearch(search);
   };
   return (
     <div className="container mx-auto mt-2 ">
